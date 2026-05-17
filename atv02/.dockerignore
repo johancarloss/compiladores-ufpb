@@ -1,0 +1,14 @@
+compci
+*.o
+tests/*.o
+tests/*.s
+tests/p1
+tests/erro
+tests/grande
+tests/p2
+tests/overflow
+tests/runtime.s
+.git/
+.gitignore
+README.md
+Dockerfile

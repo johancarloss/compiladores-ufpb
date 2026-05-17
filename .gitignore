@@ -1,0 +1,52 @@
+# Binários e objetos C/C++
+*.o
+*.a
+*.so
+*.exe
+*.out
+compci
+compcia
+compciv
+
+# Assembly intermediário (mas mantém runtime.s)
+*.s
+!runtime.s
+
+# Executáveis de teste (qualquer atv*/tests/<nome>)
+atv*/tests/*.o
+atv*/tests/*.s
+atv*/tests/runtime.s
+atv*/tests/p1
+atv*/tests/p2
+atv*/tests/erro
+atv*/tests/grande
+atv*/tests/grande_ok
+atv*/tests/overflow
+atv*/tests/letras_meio
+atv*/tests/negativo
+atv*/tests/so_espaco
+atv*/tests/vazio
+
+# Cache de build genérico
+build/
+dist/
+*.cache
+
+# Docker
+.docker/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs e temporários
+*.log
+*.tmp
