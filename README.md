@@ -6,6 +6,14 @@ Repositório das atividades da disciplina **Construção de Compiladores** do cu
 
 ---
 
+## Sobre a disciplina
+
+As atividades desta disciplina são **incrementais**: cada uma estende a linguagem implementada na anterior. Começamos com constantes inteiras (Atividade 02), seguimos com expressões aritméticas, variáveis, controle de fluxo, funções, e assim por diante.
+
+Este repositório serve como **base única** para essa evolução. Ao final do semestre, o compilador resultante é o **projeto consolidado da disciplina**, fruto da junção e refinamento das partes desenvolvidas em cada atividade.
+
+---
+
 ## Atividades
 
 | # | Tema | Pasta |
