@@ -1,20 +1,22 @@
-# Binários e objetos C/C++
-*.o
-*.a
-*.so
+# === Binários compilados ===
 *.exe
 *.out
 compci
 compcia
 compciv
+zeller
 
-# Assembly intermediário (mas mantém runtime.s)
-*.s
-!runtime.s
+# === Objetos e artefatos de build (qualquer lugar) ===
+*.o
+*.a
+*.so
 
-# Executáveis de teste (qualquer atv*/tests/<nome>)
-atv*/tests/*.o
+# === Assembly GERADO por compiladores (não confundir com fontes .s) ===
+# Os .s em atv*/tests/ são gerados pelo compci da atv02 (output do compilador).
+# Já o atv*/zeller.s, atv*/runtime.s etc. são FONTES e devem ser versionados.
 atv*/tests/*.s
+
+# === Executáveis e cópias temporárias dentro de atv*/tests/ ===
 atv*/tests/runtime.s
 atv*/tests/p1
 atv*/tests/p2
@@ -27,26 +29,26 @@ atv*/tests/negativo
 atv*/tests/so_espaco
 atv*/tests/vazio
 
-# Cache de build genérico
+# === Cache de build genérico ===
 build/
 dist/
 *.cache
 
-# Docker
+# === Docker ===
 .docker/
 
-# Editor / IDE
+# === Editor / IDE ===
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Sistema
+# === Sistema ===
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Logs e temporários
+# === Logs e temporários ===
 *.log
 *.tmp
