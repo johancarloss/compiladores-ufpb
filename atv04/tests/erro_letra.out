@@ -1,0 +1,4 @@
+<ParenEsq, "(", 0>
+<Numero, "1", 1>
+<Soma, "+", 3>
+Erro léxico na posição 5: caractere inválido 'a'

@@ -1,6 +1,5 @@
 # === Binários compilados ===
 *.exe
-*.out
 compci
 compcia
 compciv

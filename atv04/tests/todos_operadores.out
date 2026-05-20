@@ -1,0 +1,13 @@
+<ParenEsq, "(", 0>
+<ParenEsq, "(", 1>
+<Numero, "10", 2>
+<Sub, "-", 5>
+<Numero, "4", 7>
+<ParenDir, ")", 8>
+<Div, "/", 10>
+<ParenEsq, "(", 12>
+<Numero, "2", 13>
+<Soma, "+", 15>
+<Numero, "3", 17>
+<ParenDir, ")", 18>
+<ParenDir, ")", 19>
