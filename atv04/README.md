@@ -44,7 +44,25 @@ Em caso de erro léxico, imprime `Erro léxico na posição X: caractere inváli
 make test
 ```
 
-Compara a saída do `lexer` em cada arquivo `.ec1` de `tests/` com a saída esperada em `.out`.
+Compara a saída padrão do `lexer` (`stdout`) em cada arquivo `.ec1` de `tests/` com a saída esperada no arquivo `.out` de mesmo nome. Cada caso de teste usa um par `tests/{nome_teste}.ec1` e `tests/{nome_teste}.out`.
+
+Exemplo de teste passando:
+
+```text
+== literal_simples ==
+input: tests/literal_simples.ec1
+expected: tests/literal_simples.out
+PASS
+```
+
+Exemplo de teste falhando:
+
+```text
+== literal_simples ==
+input: tests/literal_simples.ec1
+expected: tests/literal_simples.out
+FAIL
+```
 
 ## Linguagem EC1 (gramática)
 
