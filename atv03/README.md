@@ -6,7 +6,7 @@ Diferente das atividades anteriores, esta não envolve um compilador — o progr
 
 **Disciplina:** Construção de Compiladores (UFPB — P6 — 2026.1)
 **Professor:** Andrei Formiga
-**Atividade:** 03 — entregue em 14/05/2026
+**Atividade:** 03
 
 ---
 
