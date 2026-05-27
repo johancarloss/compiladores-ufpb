@@ -1,18 +1,24 @@
 import sys
 from lexer import lex
 from parser import parse, ErroSintatico
+from arvore import desenhar_arvore
 
 
 def main():
-    if len(sys.argv) != 2:
-        print(f"Uso: {sys.argv[0]} <arquivo.ec1>", file=sys.stderr)
+    args = sys.argv[1:]
+    mostrar_visual = "--arvore" in args
+    args = [a for a in args if a != "--arvore"]
+
+    if len(args) != 1:
+        print(f"Uso: {sys.argv[0]} [--arvore] <arquivo.ec1>", file=sys.stderr)
         return 1
 
+    caminho = args[0]
     try:
-        with open(sys.argv[1], "r") as f:
+        with open(caminho, "r") as f:
             fonte = f.read()
     except OSError:
-        print(f"Erro: nao foi possivel abrir '{sys.argv[1]}'", file=sys.stderr)
+        print(f"Erro: nao foi possivel abrir '{caminho}'", file=sys.stderr)
         return 1
 
     lx = lex(fonte)
@@ -28,6 +34,9 @@ def main():
         return 1
 
     print(f"Arvore: {arvore}")
+    if mostrar_visual:
+        print("Arvore (visual):")
+        print(desenhar_arvore(arvore))
     print(f"Valor: {arvore.avaliar()}")
     return 0
 

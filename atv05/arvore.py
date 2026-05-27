@@ -43,3 +43,21 @@ class OpBin(Exp):
 
     def __str__(self):
         return f"({self.esq} {self.op.value} {self.dir})"
+
+
+def desenhar_arvore(no):
+    linhas = []
+    _desenhar(no, "", "", linhas)
+    return "\n".join(linhas)
+
+
+def _desenhar(no, conector, prefixo, linhas):
+    if isinstance(no, Const):
+        rotulo = str(no.valor)
+    else:
+        rotulo = no.op.value
+    linhas.append(conector + rotulo)
+    if isinstance(no, OpBin):
+        # o operando esquerdo nao e o ultimo filho, o direito e
+        _desenhar(no.esq, prefixo + "├── ", prefixo + "│   ", linhas)
+        _desenhar(no.dir, prefixo + "└── ", prefixo + "    ", linhas)
