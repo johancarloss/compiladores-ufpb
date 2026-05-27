@@ -36,7 +36,7 @@ Gera o executável `lexer`.
 
 Imprime a sequência de tokens no formato `<tipo, "lexema", posicao>`, um por linha.
 
-Em caso de erro léxico, imprime `Erro léxico na posição X: caractere inválido 'Y'` em `stderr` e retorna código de saída `1`.
+Em caso de erro léxico, imprime os tokens reconhecidos até o ponto do erro, seguido de `Erro léxico na posição X: caractere inválido 'Y'` (em `stdout`), e retorna código de saída `1`. A análise para no primeiro caractere inválido.
 
 ## Como rodar os testes
 
