@@ -4,10 +4,16 @@ Histórico de evolução do projeto da disciplina de Construção de Compiladore
 
 Organizado por atividade. Formato inspirado em [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
-## [Não lançado]
+## [Atividade 05] — Análise Sintática da EC1 — 2026-05-27
 
-### Em progresso
-- **Atividade 05** — Análise sintática da EC1: parser descendente recursivo, árvore de sintaxe abstrata (AST) e interpretador tree-walking. Em Python, reusando o analisador léxico da atividade 04.
+### Adicionado
+- Analisador sintático descendente recursivo (`parser.py`): uma função por não-terminal da gramática (`analisa_exp`, `analisa_operador`), produzindo a árvore de sintaxe abstrata.
+- Árvore de sintaxe abstrata (`arvore.py`): classes `Const` e `OpBin`, com método `avaliar()` (interpretador tree-walking) e `__str__()` (reconstrói a expressão).
+- CLI (`main.py`): lê o arquivo, faz análise léxica + sintática, imprime a árvore e o valor da expressão.
+- Suíte de 12 testes: expressões válidas (verificando árvore e valor), erros de sintaxe e erro léxico.
+
+### Reusado
+- Analisador léxico da atividade 04 (`lexer.py`, copiado para a pasta da atividade).
 
 ## [Atividade 04] — Análise Léxica da EC1 — 2026-05-27
 

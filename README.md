@@ -22,8 +22,9 @@ Este repositório serve como **base única** para essa evolução. Ao final do s
 | 02 | Compilador CI — Constantes Inteiras (C → assembly x86-64 GAS) | [`atv02/`](atv02/) |
 | 03 | Congruência de Zeller (programa assembly x86-64) + perguntas teóricas | [`atv03/`](atv03/) |
 | 04 | Análise léxica da linguagem EC1 (lexer em Python) | [`atv04/`](atv04/) |
+| 05 | Análise sintática da EC1 (parser + AST + interpretador, em Python) | [`atv05/`](atv05/) |
 
-À medida que novas atividades forem lançadas, vão sendo adicionadas como `atv05/`, `atv06/`, etc.
+À medida que novas atividades forem lançadas, vão sendo adicionadas como `atv06/`, `atv07/`, etc.
 
 ---
 
