@@ -2,7 +2,7 @@
 
 set -u
 
-LEXER="./lexer"
+LEXER="lexer.py"
 TEST_DIR="tests"
 TMP_DIR="${TMPDIR:-/tmp}/atv04-tests.$$"
 FAILURES=0
@@ -37,15 +37,7 @@ for input in "$TEST_DIR"/*.ec1; do
         continue
     fi
 
-    if [ ! -x "$LEXER" ]; then
-        echo "FAIL"
-        echo "  executavel nao encontrado: $LEXER"
-        echo
-        FAILURES=$((FAILURES + 1))
-        continue
-    fi
-
-    "$LEXER" "$input" > "$actual"
+    python3 "$LEXER" "$input" > "$actual"
 
     if cmp -s "$expected" "$actual"; then
         echo "PASS"

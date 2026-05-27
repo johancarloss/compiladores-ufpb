@@ -21,7 +21,7 @@ Este repositório serve como **base única** para essa evolução. Ao final do s
 | 01 | Questionário inicial (compilador vs interpretador, por que estudar compiladores) | [`atv01/`](atv01/) |
 | 02 | Compilador CI — Constantes Inteiras (C → assembly x86-64 GAS) | [`atv02/`](atv02/) |
 | 03 | Congruência de Zeller (programa assembly x86-64) + perguntas teóricas | [`atv03/`](atv03/) |
-| 04 | Análise léxica da linguagem EC1 (lexer em C) | [`atv04/`](atv04/) |
+| 04 | Análise léxica da linguagem EC1 (lexer em Python) | [`atv04/`](atv04/) |
 
 À medida que novas atividades forem lançadas, vão sendo adicionadas como `atv05/`, `atv06/`, etc.
 

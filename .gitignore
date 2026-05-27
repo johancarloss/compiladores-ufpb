@@ -34,6 +34,10 @@ build/
 dist/
 *.cache
 
+# === Python ===
+__pycache__/
+*.pyc
+
 # === Docker ===
 .docker/
 

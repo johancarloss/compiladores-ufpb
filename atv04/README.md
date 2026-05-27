@@ -11,27 +11,21 @@ Analisador léxico (lexer) para a linguagem **EC1** (Expressões Constantes 1): 
 ## Estrutura
 
 ```
-token.h          # tipos de token (enum) e estrutura Token
-lexer.h          # interface do analisador léxico
-lexer.c          # implementação do analisador léxico
-main.c           # CLI: lê arquivo, chama lexer, imprime tokens
-Makefile         # build e testes
+lexer.py         # analisador léxico (tipos de token, Token, lex, CLI)
+run_tests.sh     # roda os casos de teste
+Makefile         # atalhos (make test, make clean)
 README.md        # este arquivo
 tests/           # casos de teste (.ec1 com .out esperado)
 ```
 
-## Como compilar
+## Requisitos
 
-```bash
-make
-```
-
-Gera o executável `lexer`.
+Python 3 (sem dependências externas).
 
 ## Como executar
 
 ```bash
-./lexer <arquivo.ec1>
+python3 lexer.py <arquivo.ec1>
 ```
 
 Imprime a sequência de tokens no formato `<tipo, "lexema", posicao>`, um por linha.
@@ -44,7 +38,7 @@ Em caso de erro léxico, imprime os tokens reconhecidos até o ponto do erro, se
 make test
 ```
 
-Compara a saída padrão do `lexer` (`stdout`) em cada arquivo `.ec1` de `tests/` com a saída esperada no arquivo `.out` de mesmo nome. Cada caso de teste usa um par `tests/{nome_teste}.ec1` e `tests/{nome_teste}.out`.
+Compara a saída padrão do `lexer.py` (`stdout`) em cada arquivo `.ec1` de `tests/` com a saída esperada no arquivo `.out` de mesmo nome. Cada caso de teste usa um par `tests/{nome_teste}.ec1` e `tests/{nome_teste}.out`.
 
 Exemplo de teste passando:
 
