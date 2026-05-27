@@ -4,6 +4,7 @@ compci
 compcia
 compciv
 zeller
+lexer
 
 # === Objetos e artefatos de build (qualquer lugar) ===
 *.o
