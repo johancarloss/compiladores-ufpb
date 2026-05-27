@@ -32,10 +32,13 @@ Este repositório serve como **base única** para essa evolução. Ao final do s
 ```
 .
 ├── README.md          # este arquivo
+├── CHANGELOG.md       # histórico de evolução por atividade
 ├── .gitignore         # ignora binários, objetos, artefatos de build
 ├── docs/              # transcrições e referências dos enunciados
 └── atvNN/             # uma pasta por atividade — código + README próprio
 ```
+
+O histórico de evolução do projeto está em [`CHANGELOG.md`](CHANGELOG.md).
 
 Cada pasta `atvNN/` é independente: tem seu próprio `README.md`, `Makefile` (quando aplicável), código-fonte e testes. Para detalhes de compilação/execução de cada atividade, leia o README dentro da pasta.
 
