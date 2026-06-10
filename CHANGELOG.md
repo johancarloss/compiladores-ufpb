@@ -4,6 +4,17 @@ Histórico de evolução do projeto da disciplina de Construção de Compiladore
 
 Organizado por atividade. Formato inspirado em [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
+## [Atividade 06] — Compilador EC1 Completo — 2026-06-10
+
+### Adicionado
+- Gerador de código (`compilador.py`): traduz a árvore sintática para assembly x86-64, usando a pilha (`push`/`rax`/`pop`) para armazenar resultados intermediários. Gera o operando direito primeiro para manter a ordem correta em subtração e divisão. Salva a saída em arquivo `.s`.
+- Runtime (`runtime.s`): funções `imprime_num` e `sair` (reusado da atividade 02).
+- Suíte de 10 testes (`testes.py`) com verificação automática: interpreta a expressão, monta o assembly com `as`, linka com `ld` e executa o binário, comparando o resultado real. Em hosts não-x86-64, valida apenas a montagem.
+- Dockerfile para rodar os testes (montagem + execução real) em ambiente x86-64.
+
+### Reusado
+- Léxico, parser e AST das atividades 04 e 05 (`lexer.py`, `parser.py`, `arvore.py`).
+
 ## [Atividade 05] — Análise Sintática da EC1 — 2026-05-27
 
 ### Adicionado

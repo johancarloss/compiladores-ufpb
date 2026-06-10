@@ -23,8 +23,9 @@ Este repositório serve como **base única** para essa evolução. Ao final do s
 | 03 | Congruência de Zeller (programa assembly x86-64) + perguntas teóricas | [`atv03/`](atv03/) |
 | 04 | Análise léxica da linguagem EC1 (lexer em Python) | [`atv04/`](atv04/) |
 | 05 | Análise sintática da EC1 (parser + AST + interpretador, em Python) | [`atv05/`](atv05/) |
+| 06 | Compilador EC1 completo (geração de código assembly x86-64 via pilha) | [`atv06/`](atv06/) |
 
-À medida que novas atividades forem lançadas, vão sendo adicionadas como `atv06/`, `atv07/`, etc.
+À medida que novas atividades forem lançadas, vão sendo adicionadas como `atv07/`, `atv08/`, etc.
 
 ---
 
