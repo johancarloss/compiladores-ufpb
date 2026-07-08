@@ -9,6 +9,7 @@ from tests.ambiente import (
     running_in_docker,
 )
 from tests.lexer_tests import executar_testes_lexer
+from tests.parser_tests import executar_testes_parser
 from tests.programa_tests import executar_testes_programa
 
 
@@ -34,6 +35,7 @@ def main():
     imprimir_cabecalho(has_as, has_ld, can_run)
 
     lexer_sucessos, lexer_total = executar_testes_lexer()
+    parser_sucessos, parser_total = executar_testes_parser()
     programa_sucessos, programa_total = executar_testes_programa(
         tests_dir=tests_dir,
         has_as=has_as,
@@ -41,8 +43,8 @@ def main():
         can_run=can_run,
     )
 
-    sucessos = lexer_sucessos + programa_sucessos
-    total = lexer_total + programa_total
+    sucessos = lexer_sucessos + parser_sucessos + programa_sucessos
+    total = lexer_total + parser_total + programa_total
     print(f"Resultado final: {sucessos}/{total} testes passaram com sucesso.")
     return 0 if sucessos == total else 1
 
