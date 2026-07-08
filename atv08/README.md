@@ -1,10 +1,8 @@
 # Atividade 08 — Expressões com Variáveis (EV)
 
-Este projeto implementará a evolução do compilador desenvolvido nas atividades anteriores, adaptando-o para a linguagem **EV** (Expressões com Variáveis).
+Este projeto implementa a evolução do compilador desenvolvido nas atividades anteriores, adaptando-o para a linguagem **EV** (Expressões com Variáveis). A principal mudança em relação à **Atividade 07 (EC2)** é a inclusão de declarações e uso de variáveis em expressões aritméticas.
 
-Nesta primeira etapa, a pasta `atv08/` foi criada a partir da base funcional da **Atividade 07 (EC2)**. As próximas etapas adicionam declarações de variáveis, análise semântica e geração de código com seção `.bss`.
-
-O compilador realiza análise léxica, análise sintática, construção da Árvore de Sintaxe Abstrata (AST) e geração de código assembly **x86-64** para Linux.
+O compilador realiza análise léxica, análise sintática, análise semântica, construção da Árvore de Sintaxe Abstrata (AST) e geração de código assembly **x86-64** para Linux.
 
 **Disciplina:** Construção de Compiladores (UFPB — P6 — 2026.1)
 **Professor:** Andrei Formiga
@@ -15,76 +13,71 @@ O compilador realiza análise léxica, análise sintática, construção da Árv
 # Estrutura dos Arquivos em `atv08/`
 
 ```text
-├── arvore.py       # Definição das classes da AST
-├── lexer.py        # Analisador léxico
-├── parser.py       # Parser da linguagem EV
-├── semantico.py    # Análise semântica da linguagem EV
-├── runtime.s       # Rotinas auxiliares em Assembly
-├── compilador.py   # Gerador de código Assembly
-├── testes.py       # Orquestrador dos testes automatizados
+├── arvore.py        # Definição das classes da AST
+├── lexer.py         # Analisador léxico
+├── parser.py        # Parser da linguagem EV
+├── semantico.py     # Análise semântica da linguagem EV
+├── runtime.s        # Rotinas auxiliares em Assembly
+├── compilador.py    # Gerador de código Assembly
+├── testes.py        # Orquestrador dos testes automatizados
 ├── tests/
-│   ├── ambiente.py       # Detecção de ferramentas e fallback Docker
-│   ├── lexer_tests.py    # Testes do analisador léxico
-│   ├── programa_tests.py # Testes da saída final do programa
-│   └── out/              # Artefatos temporários gerados pelos testes
-├── Makefile        # Comandos auxiliares
-└── README.md       # Este arquivo
+│   ├── __init__.py
+│   ├── ambiente.py        # Detecção de ferramentas e execução via Docker
+│   ├── lexer_tests.py     # Testes do analisador léxico
+│   ├── parser_tests.py    # Testes do analisador sintático
+│   ├── semantico_tests.py # Testes da análise semântica
+│   └── geracao_tests.py   # Testes da geração de Assembly
+├── Dockerfile       # Ambiente Linux x86-64 para testes end-to-end
+├── Makefile         # Comandos auxiliares
+└── README.md        # Este arquivo
 ```
 
 ---
 
-# Situação atual
+# O que mudou em relação à Atividade 07?
 
-Esta etapa apenas cria a base da Atividade 08. O código ainda preserva o comportamento da Atividade 07 para garantir que a cópia inicial continue funcional.
-
-As próximas etapas do plano de implementação vão adicionar:
-
-* tokens para identificadores, `=` e `;`;
-* novos nós de AST para programa, declaração e variável;
-* parser iniciado pelo não-terminal `<programa>`;
-* análise semântica para detectar variáveis não declaradas;
-* geração de código com variáveis na seção `.bss`;
-* testes específicos da linguagem EV.
-
----
-
-# Base herdada da Atividade 07
-
-Na linguagem EC1, todas as operações precisavam estar obrigatoriamente entre parênteses.
-
-Exemplo:
-
-```text
-(7 + (5 * 3))
-```
-
-Na EC2, base usada para iniciar esta atividade, os parênteses passam a ser opcionais sempre que a precedência natural dos operadores for suficiente.
-
-Agora são aceitas expressões como:
+Na linguagem EC2, o programa era apenas uma expressão aritmética:
 
 ```text
 7 + 5 * 3
+```
 
-10 - 8 - 2
+Na linguagem EV, o programa passa a ter zero ou mais declarações de variáveis, seguidas por uma expressão final indicada por `=`.
 
-100 - 2 * 10 + 20
+Exemplo:
 
-3 + 4 * 2 / (1 - 5)
+```ev
+x = (7 + 4) * 12;
+y = x * 3 + 11;
+= (x * y) + (x * 11) + (y * 13)
+```
+
+Também continuam válidos programas sem declarações:
+
+```ev
+= 42
 ```
 
 ---
 
-# Precedência e Associatividade
+# Gramática
 
-O parser foi reorganizado para implementar a seguinte gramática:
+O parser implementa a seguinte gramática:
 
 ```bnf
-exp_a ::= exp_m (('+' | '-') exp_m)*
+programa  ::= decl* resultado
 
-exp_m ::= prim (('*' | '/') prim)*
+decl      ::= ident '=' exp_a ';'
 
-prim ::= numero
-       | '(' exp_a ')'
+resultado ::= '=' exp_a
+
+exp_a     ::= exp_m (('+' | '-') exp_m)*
+
+exp_m     ::= prim (('*' | '/') prim)*
+
+prim      ::= numero
+            | ident
+            | '(' exp_a ')'
 ```
 
 Com essa divisão:
@@ -92,38 +85,112 @@ Com essa divisão:
 * Multiplicação e divisão possuem precedência sobre soma e subtração.
 * Operadores de mesma precedência são avaliados da esquerda para a direita.
 * Parênteses continuam podendo alterar a ordem de avaliação.
+* Variáveis podem ser usadas em expressões depois de declaradas.
 
 ---
 
-# Implementação do Parser
+# Análise Léxica
 
-O analisador sintático foi dividido em três funções principais:
+O lexer reconhece os tokens já existentes da EC2:
 
-* `analisa_exp_a()`
+```text
+Numero, ParenEsq, ParenDir, Soma, Sub, Mult, Div
+```
 
-  * Reconhece operações de soma e subtração.
+E adiciona os tokens necessários para EV:
 
-* `analisa_exp_m()`
+```text
+Ident, Igual, PontoVirgula
+```
 
-  * Reconhece multiplicação e divisão.
+Identificadores seguem a regra:
 
-* `analisa_prim()`
+```bnf
+ident ::= letra (letra | digito)*
+```
 
-  * Reconhece constantes inteiras e expressões entre parênteses.
-
-Também foi utilizada a função `olhar_token()` para consultar o próximo token sem consumi-lo, permitindo reconhecer cadeias de operadores da mesma precedência.
-
-A construção da AST continua utilizando apenas os nós `Const` e `OpBin`, mantendo compatibilidade com o gerador de código desenvolvido na atividade anterior.
+Entradas como `237abc` e `9valor` são tratadas como erro léxico, porque começam como número e depois misturam letras.
 
 ---
 
-# Geração de Código Atual
+# AST
 
-Até a conclusão das próximas etapas, o gerador de código ainda é o mesmo da Atividade 07.
+A AST foi estendida com novos nós:
 
-Como a estrutura da AST permaneceu inalterada, o módulo `compilador.py` continua produzindo código Assembly x86-64 exatamente da mesma forma implementada na Atividade 06.
+```python
+Programa(declaracoes, resultado)
+Decl(nome, exp)
+Var(nome)
+```
 
-A árvore produzida pelo parser respeita as regras de precedência e associatividade da linguagem EC2, que será estendida para EV.
+Os nós já existentes continuam sendo usados para expressões:
+
+```python
+Const(valor)
+OpBin(op, esq, dir)
+```
+
+Assim, um programa como:
+
+```ev
+x = 10;
+y = x + 2;
+= y * 3
+```
+
+É representado como um `Programa` com duas declarações e uma expressão final.
+
+---
+
+# Análise Semântica
+
+A análise semântica verifica se toda variável usada já foi declarada anteriormente.
+
+Este programa é válido:
+
+```ev
+x = 10;
+y = x + 2;
+= y * 3
+```
+
+Este programa é inválido:
+
+```ev
+x = y + 1;
+y = 2;
+= x
+```
+
+Nesse caso, o compilador sinaliza erro semântico porque `y` é usado antes da declaração.
+
+---
+
+# Geração de Código
+
+O gerador emite assembly x86-64 no formato GAS.
+
+Para variáveis, é gerada uma seção `.bss` com uma reserva de 8 bytes por identificador declarado:
+
+```asm
+.section .bss
+    .lcomm x, 8
+    .lcomm y, 8
+```
+
+Para cada declaração, a expressão é calculada em `%rax` e depois armazenada na variável:
+
+```asm
+    mov %rax, x
+```
+
+Para cada uso de variável, o valor é carregado para `%rax`:
+
+```asm
+    mov x, %rax
+```
+
+Ao final, a expressão resultado deixa seu valor em `%rax`, e o runtime imprime esse valor com `imprime_num`.
 
 ---
 
@@ -141,47 +208,49 @@ Exemplo:
 python3 compilador.py programa.ev programa.s
 ```
 
+Em um ambiente Linux x86-64 com GNU assembler e linker disponíveis, o assembly pode ser montado e linkado com:
+
+```bash
+as --64 -o programa.o programa.s
+ld -o programa programa.o
+./programa
+```
+
 ---
 
 # Como Executar os Testes
 
-Os testes podem ser executados utilizando:
+Os testes locais podem ser executados com:
 
 ```bash
 make test
 ```
 
-ou
+ou:
 
 ```bash
 python3 testes.py
 ```
 
-Além dos testes das atividades anteriores, foram adicionados casos específicos para validar a nova gramática:
+A suíte é dividida por etapa do compilador:
 
-```text
-42
-7+5*3
-10-8-2
-100/2/2
-10*5+20/4
-100-2*10+20
-3+4*2/(1-5)
+* `lexer_tests.py`: tokens de EV e erros léxicos;
+* `parser_tests.py`: estrutura de programas, declarações e expressão final;
+* `semantico_tests.py`: uso correto e incorreto de variáveis;
+* `geracao_tests.py`: assembly gerado e execução dos binários quando o ambiente permite.
+
+Em máquinas que não possuem GNU `as`, `ld` ou não são Linux x86-64, os testes executáveis de geração são ignorados localmente.
+
+Para rodar a validação completa em Docker:
+
+```bash
+make docker-test
 ```
 
-Esses testes verificam:
-
-* precedência de operadores;
-* associatividade à esquerda;
-* utilização de parênteses;
-* compatibilidade com expressões da EC1.
-
-Em ambientes Linux x86-64, os testes compilam, montam, linkam e executam os binários gerados.
-
-Em outros sistemas, como Windows, é realizada a validação da sintaxe do Assembly gerado, conforme disponibilidade das ferramentas (`as` e `ld`).
+Esse comando monta, linka e executa os binários gerados em um ambiente Linux x86-64.
 
 ---
 
-# Objetivo da Atividade 08
+# Objetivo da Atividade
 
-O objetivo desta atividade é adaptar o compilador para reconhecer programas com declarações e uso de variáveis, preservando as regras de precedência e associatividade já implementadas na EC2.
+O objetivo desta atividade foi adaptar o compilador para reconhecer programas com declarações e uso de variáveis, mantendo as regras de precedência e associatividade da EC2, adicionando análise semântica para variáveis não declaradas e gerando assembly funcional com armazenamento em memória.

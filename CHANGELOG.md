@@ -4,6 +4,21 @@ Histórico de evolução do projeto da disciplina de Construção de Compiladore
 
 Organizado por atividade. Formato inspirado em [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
+## [Atividade 08] — Expressões com Variáveis (EV) — 2026-07-08
+
+### Adicionado
+- Linguagem EV: suporte a programas com declarações de variáveis e expressão final, usando a forma `x = exp;` para declarações e `= exp` para o resultado do programa.
+- Lexer: reconhecimento de identificadores, sinal de igualdade e ponto-e-vírgula, além de erro léxico para sequências inválidas como `237abc` e `9valor`.
+- AST: novos nós `Programa`, `Decl` e `Var`, mantendo `Const` e `OpBin` para expressões aritméticas.
+- Parser: novo não-terminal inicial para programas, preservando precedência e associatividade da EC2 em expressões com números, variáveis e parênteses.
+- Análise semântica (`semantico.py`): verificação de uso de variáveis somente após declaração, com erro específico para variável não declarada.
+- Gerador de código: emissão de seção `.bss` para variáveis, armazenamento de declarações em memória e carregamento de variáveis para `%rax`.
+- Suíte de testes modular em `tests/`, separada por lexer, parser, semântico, geração de código e infraestrutura de ambiente.
+- Testes end-to-end via Docker para montar, linkar e executar os binários gerados em Linux x86-64.
+
+### Reusado
+- Runtime de impressão (`runtime.s`) e geração de expressões aritméticas herdados das atividades anteriores.
+
 ## [Atividade 06] — Compilador EC1 Completo — 2026-06-10
 
 ### Adicionado
