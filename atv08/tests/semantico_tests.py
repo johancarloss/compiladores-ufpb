@@ -1,6 +1,6 @@
 from lexer import lex
 from parser import parse
-from semantico import ErroSemantico, verificar
+from semantico import VariavelNaoDeclarada, verificar
 
 
 SEMANTICOS_VALIDOS = [
@@ -10,9 +10,9 @@ SEMANTICOS_VALIDOS = [
 ]
 
 SEMANTICOS_INVALIDOS = [
-    ("usa variavel antes da declaracao", "x = y + 1;\ny = 2;\n= x"),
-    ("resultado usa variavel nao declarada", "x = 10;\n= x + z"),
-    ("resultado usa apenas variavel nao declarada", "= z"),
+    ("usa variavel antes da declaracao", "x = y + 1;\ny = 2;\n= x", "y"),
+    ("resultado usa variavel nao declarada", "x = 10;\n= x + z", "z"),
+    ("resultado usa apenas variavel nao declarada", "= z", "z"),
 ]
 
 
@@ -34,11 +34,12 @@ def executar_testes_semanticos():
             sucessos += 1
         print("-" * 60)
 
-    for nome, fonte in SEMANTICOS_INVALIDOS:
+    for nome, fonte, variavel in SEMANTICOS_INVALIDOS:
         print(f"Semantico invalido: {nome}")
         try:
             verificar(parse_fonte(fonte))
-        except ErroSemantico as e:
+        except VariavelNaoDeclarada as e:
+            assert e.nome == variavel, f"esperava erro da variavel {variavel}, recebeu {e.nome}"
             print(f"  [PASS] Erro semantico detectado: {e}")
             sucessos += 1
         except Exception as e:
