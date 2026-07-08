@@ -1,4 +1,4 @@
-from arvore import Const, OpBin, Op
+from arvore import Const, Decl, Op, OpBin, Programa, Var
 from lexer import TokenTipo
 
 
@@ -28,6 +28,28 @@ class Parser:
         if tok.tipo != tipo:
             raise ErroSintatico(f"esperava {tipo.value}, encontrou '{tok.lexema}'")
         return tok
+
+    def analisa_programa(self):
+        declaracoes = []
+        tok = self.olhar_token()
+
+        while tok is not None and tok.tipo == TokenTipo.IDENT:
+            declaracoes.append(self.analisa_decl())
+            tok = self.olhar_token()
+
+        resultado = self.analisa_result()
+        return Programa(declaracoes, resultado)
+
+    def analisa_decl(self):
+        nome = self.verifica_token(TokenTipo.IDENT).lexema
+        self.verifica_token(TokenTipo.IGUAL)
+        exp = self.analisa_exp_a()
+        self.verifica_token(TokenTipo.PONTO_VIRGULA)
+        return Decl(nome, exp)
+
+    def analisa_result(self):
+        self.verifica_token(TokenTipo.IGUAL)
+        return self.analisa_exp_a()
 
     def analisa_exp_a(self):
         """Analisa expressões aditivas (soma e subtração)."""
@@ -71,6 +93,8 @@ class Parser:
         
         if tok.tipo == TokenTipo.NUMERO:
             return Const(int(tok.lexema))
+        elif tok.tipo == TokenTipo.IDENT:
+            return Var(tok.lexema)
         elif tok.tipo == TokenTipo.PAREN_ESQ:
             # Dentro do parêntese, a precedência reinicia para a mais baixa (exp_a)
             exp = self.analisa_exp_a()
@@ -85,10 +109,9 @@ def parse(tokens):
     p = Parser(tokens)
     if not p.tokens:
         raise ErroSintatico("entrada vazia")
-        
-    arvore = p.analisa_exp_a()
+
+    arvore = p.analisa_programa()
     
-    # Nesta base inicial, o programa ainda e uma unica expressao.
     sobra = p.olhar_token()
     if sobra is not None:
         raise ErroSintatico(f"token inesperado apos o fim do programa: '{sobra.lexema}'")

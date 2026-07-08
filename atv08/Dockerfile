@@ -1,5 +1,4 @@
-# Dockerfile — Testes do Compilador EV
-# A imagem python:3 é baseada em Debian e já possui gcc, as, ld e make instalados.
+# Dockerfile — Testes da linguagem EV
 FROM python:3
 
 WORKDIR /app
@@ -7,5 +6,5 @@ WORKDIR /app
 # Copia os arquivos da atv08 para o container
 COPY . .
 
-# Comando padrão roda o script de testes que compila, monta, linka e executa os binários
+# Comando padrão roda os testes de lexer e parser
 CMD ["python3", "testes.py"]
