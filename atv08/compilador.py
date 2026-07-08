@@ -1,16 +1,45 @@
 import sys
 from lexer import lex
 from parser import parse, ErroSintatico
-from arvore import Const, OpBin, Op
+from arvore import Const, Decl, OpBin, Op, Programa, Var
 from semantico import ErroSemantico, verificar
 
 
 class GeradorCodigo:
     def __init__(self):
         self.linhas = []
+        self.variaveis = []
+
+    def gerar_secao_bss(self):
+        if not self.variaveis:
+            return ""
+
+        linhas = [".section .bss"]
+        for nome in self.variaveis:
+            linhas.append(f"    .lcomm {nome}, 8")
+        return "\n".join(linhas)
 
     def gerar(self, no):
-        if isinstance(no, Const):
+        if isinstance(no, Programa):
+            declaradas = set()
+            for decl in no.declaracoes:
+                if decl.nome not in declaradas:
+                    self.variaveis.append(decl.nome)
+                    declaradas.add(decl.nome)
+
+            for decl in no.declaracoes:
+                self.gerar(decl)
+
+            self.linhas.append("    # Resultado final")
+            self.gerar(no.resultado)
+        elif isinstance(no, Decl):
+            self.linhas.append(f"    # Declaração: {no.nome}")
+            self.gerar(no.exp)
+            self.linhas.append(f"    mov %rax, {no.nome}")
+        elif isinstance(no, Var):
+            self.linhas.append(f"    # Variável {no.nome}")
+            self.linhas.append(f"    mov {no.nome}, %rax")
+        elif isinstance(no, Const):
             self.linhas.append(f"    # Constante {no.valor}")
             self.linhas.append(f"    mov ${no.valor}, %rax")
         elif isinstance(no, OpBin):
@@ -69,10 +98,15 @@ def compilar(fonte: str) -> str:
     gerador = GeradorCodigo()
     gerador.gerar(arvore)
     
+    secao_bss = gerador.gerar_secao_bss()
     codigo_expressao = "\n".join(gerador.linhas)
     
     # Modelo de arquivo assembly final
-    assembly = f""".section .text
+    secoes = []
+    if secao_bss:
+        secoes.append(secao_bss)
+
+    secoes.append(f""".section .text
 .globl _start
 _start:
     # --- Início do Código Gerado ---
@@ -82,7 +116,8 @@ _start:
     call imprime_num
     call sair
     .include "runtime.s"
-"""
+""")
+    assembly = "\n".join(secoes)
     return assembly
 
 
