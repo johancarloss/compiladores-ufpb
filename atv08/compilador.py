@@ -2,6 +2,7 @@ import sys
 from lexer import lex
 from parser import parse, ErroSintatico
 from arvore import Const, OpBin, Op
+from semantico import ErroSemantico, verificar
 
 
 class GeradorCodigo:
@@ -61,7 +62,10 @@ def compilar(fonte: str) -> str:
     # 2. Análise Sintática
     arvore = parse(lx.tokens)
     
-    # 3. Geração de Código
+    # 3. Analise Semantica
+    verificar(arvore)
+
+    # 4. Geração de Código
     gerador = GeradorCodigo()
     gerador.gerar(arvore)
     
@@ -99,7 +103,7 @@ def main():
 
     try:
         assembly_gerado = compilar(fonte)
-    except (ErroSintatico, ValueError, TypeError) as e:
+    except (ErroSintatico, ErroSemantico, ValueError, TypeError) as e:
         print(f"Erro ao compilar: {e}", file=sys.stderr)
         return 1
 
