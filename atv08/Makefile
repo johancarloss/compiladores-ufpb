@@ -2,7 +2,7 @@ test:
 	python3 testes.py
 
 clean:
-	rm -rf __pycache__ tests/__pycache__
+	rm -rf __pycache__ tests/__pycache__ tests/out
 
 docker-build:
 	docker build --platform linux/amd64 -t atv08-comp .
