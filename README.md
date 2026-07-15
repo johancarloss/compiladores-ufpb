@@ -24,6 +24,9 @@ Este repositório serve como **base única** para essa evolução. Ao final do s
 | 04 | Análise léxica da linguagem EC1 (lexer em Python) | [`atv04/`](atv04/) |
 | 05 | Análise sintática da EC1 (parser + AST + interpretador, em Python) | [`atv05/`](atv05/) |
 | 06 | Compilador EC1 completo (geração de código assembly x86-64 via pilha) | [`atv06/`](atv06/) |
+| 07 | Linguagem EC2 — expressões com precedência e associatividade | [`atv07/`](atv07/) |
+| 08 | Linguagem EV — expressões com variáveis (declarações + análise semântica) | [`atv08/`](atv08/) |
+| 09 | Linguagem Cmd — comandos `if`/`while`/atribuição (Turing-completa) | [`atv09/`](atv09/) |
 
 À medida que novas atividades forem lançadas, vão sendo adicionadas como `atv07/`, `atv08/`, etc.
 

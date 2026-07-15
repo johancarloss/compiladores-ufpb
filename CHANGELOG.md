@@ -4,6 +4,20 @@ Histórico de evolução do projeto da disciplina de Construção de Compiladore
 
 Organizado por atividade. Formato inspirado em [Keep a Changelog](https://keepachangelog.com/pt-BR/).
 
+## [Atividade 09] — Comandos, linguagem Cmd (Turing-completa) — 2026-07-15
+
+### Adicionado
+- Linguagem Cmd: adiciona comando condicional (`if`/`else`), comando de repetição (`while`), atribuição e operadores de comparação (`<`, `>`, `==`). Com decisão e repetição, a linguagem passa a ser Turing-completa.
+- Léxica: tokens `{` `}` `<` `>` `==` e palavras-chave `if`/`else`/`while`/`return`. Diferenciação de `=` e `==` por lookahead; palavras-chave reconhecidas como identificadores testados contra uma tabela.
+- AST: nós de comando `If`, `While`, `Atrib`; `Programa` passa a conter declarações, comandos e resultado. Comparações reusam `OpBin`.
+- Parser: novo nível de precedência para comparação (abaixo do aditivo), e análise de corpo e comandos.
+- Análise semântica: atribuição só a variável já declarada, verificando também dentro de `if`/`while`.
+- Geração de código: comparações via `cmp` + `setl`/`setg`/`setz` (flags do processador); `if` e `while` via saltos (`jz`/`jmp`) e rótulos únicos gerados por um contador.
+- Testes atualizados para a sintaxe Cmd, cobrindo condicional, repetição, atribuição e comparações (27 testes).
+
+### Reusado
+- Aritmética, variáveis e runtime herdados das atividades anteriores.
+
 ## [Atividade 08] — Expressões com Variáveis (EV) — 2026-07-08
 
 ### Adicionado

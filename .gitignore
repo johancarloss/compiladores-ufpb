@@ -38,6 +38,9 @@ dist/
 __pycache__/
 *.pyc
 
+# === Artefatos de execução dos testes (montagem/link em x86-64) ===
+atv*/tests/out/
+
 # === Docker ===
 .docker/
 
